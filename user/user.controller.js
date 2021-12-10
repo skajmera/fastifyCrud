@@ -1,14 +1,17 @@
 const usersDataAccess = require("./user.dal");
+const {generateAccessToken}=require('../utils/jwt')
 require("dotenv").config();
 
 exports.getUser = async (req) => {
   const _id = req.body._id;
   const users = await usersDataAccess.findUser({ _id: _id });
+  const token=generateAccessToken({_id:users._id})
   return {
     error: false,
     sucess: true,
     message: "Get user",
     data: users,
+    token:token
   };
 };
 

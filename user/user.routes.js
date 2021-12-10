@@ -1,7 +1,7 @@
 const userController = require("../user/user.controller");
-
+const {authenticateToken}=require('../utils/jwt')
 async function routes(fastify, options) {
-  fastify.get("/", async (req, res) => {
+  fastify.get("/", {preHandler:authenticateToken},async (req, res) => {
     return { hello: "subhash" };
   });
 
@@ -15,12 +15,12 @@ async function routes(fastify, options) {
     return response.send(result);
   });
 
-  fastify.put("/updateById", async (req, res) => {
+  fastify.put("/updateById",  {preHandler:authenticateToken},async (req, res) => {
     const result = await userController.updateUser(req);
     return res.send(result);
   });
 
-  fastify.delete("/deleteById", async (req, res) => {
+  fastify.delete("/deleteById", {preHandler:authenticateToken}, async (req, res) => {
     const result = await userController.deleteUser(req);
     return res.send(result);
   });
