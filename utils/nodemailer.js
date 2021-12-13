@@ -19,7 +19,7 @@ exports.myfunction = (fastify, reply, req) => {
       from: "subhashajmera2@gmail.com",
       to: recipient,
       subject: "hii user this is nodemailer testing  ",
-      text: "bar",
+      text: "node js test code ",
     },
     (err, info) => {
       if (err) next(err);

@@ -2,6 +2,7 @@ const fastify = require("fastify")()
 require("dotenv").config();
 require("./mongo");
 require('./utils/cron')
+// fastify.register(multer.contentParser)
 const PORT = process.env.PORT || 5000;
 fastify.register(require("./user/user.routes"));
 const{rout}=require('./utils/nodemailer')

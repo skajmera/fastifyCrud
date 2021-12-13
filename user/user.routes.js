@@ -1,10 +1,18 @@
 const userController = require("../user/user.controller");
 const {authenticateToken}=require('../utils/jwt');
 const {myfunction}=require('../utils/nodemailer')
+const multer = require('fastify-multer') 
+const upload = multer({ dest: 'public/uploads/' })
+
 async function routes(fastify, options) {
   fastify.get('/sendmail/:email', (req, reply, next) => {
     myfunction(fastify,reply,req)
   })
+  fastify.register(multer.contentParser)
+  fastify.post("/profile",{preHandler:upload.single('avatar')},async(req, res) => {
+    return res.send({ hello: "seccessfull uploaded picture" });
+  });
+
 
   fastify.get("/", {preHandler:authenticateToken},async (req, res) => {
     return ({ hello: "subhash" });
