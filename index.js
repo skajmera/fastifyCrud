@@ -1,6 +1,8 @@
 const fastify = require("fastify")({ logger: true });
 require("dotenv").config();
 require("./mongo");
+require('./utils/cron')
+
 const PORT = process.env.PORT || 5000;
 fastify.register(require("./user/user.routes"));
 
@@ -14,6 +16,7 @@ const startServer = async () => {
 };
 startServer();
 /////////////////////////////
+
 // const fastify = require("fastify")
 // require("dotenv").config();
 // require("./mongo");
