@@ -1,20 +1,15 @@
-const fastify = require("fastify")({ logger: true });
+const fastify = require("fastify")()
 require("dotenv").config();
 require("./mongo");
 require('./utils/cron')
-
 const PORT = process.env.PORT || 5000;
 fastify.register(require("./user/user.routes"));
+const{rout}=require('./utils/nodemailer')
+rout(fastify)
+fastify.listen(PORT,()=>{
+  console.log('coonected..',PORT);
+})
 
-const startServer = async () => {
-  try {
-    await fastify.listen(PORT);
-  } catch (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
-};
-startServer();
 /////////////////////////////
 
 // const fastify = require("fastify")

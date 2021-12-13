@@ -17,6 +17,7 @@
     "fastify-cron": "^1.2.0",
     "fastify-crons": "0.0.2",
     "fastify-mongodb": "^4.1.1",
+    "fastify-multer": "^2.0.2",
     "fastify-nodemailer": "^5.0.0",
     "fastify-plugin": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
