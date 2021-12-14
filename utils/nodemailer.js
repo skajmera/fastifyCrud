@@ -1,3 +1,4 @@
+const dotenv = require('dotenv').config()
 exports.rout = (fastify, options) => {
   fastify.register(require("fastify-nodemailer"), {
     pool: true,
@@ -6,7 +7,7 @@ exports.rout = (fastify, options) => {
     secure: true, // use TLS
     auth: {
       user: "subhashajmera2@gmail.com",
-      pass: "s5@9009120899",
+      pass: process.env.password,
     },
   });
 };
