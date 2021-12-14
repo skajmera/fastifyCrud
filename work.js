@@ -12,7 +12,6 @@ fastify.register(require('fastify-secure-session'), {
   key: fs.readFileSync(path.join(__dirname, 'secret-key')),
   cookie: {
     path: '/'
-    // options for setCookie, see https://github.com/fastify/fastify-cookie
   }
 })
 
@@ -20,8 +19,8 @@ fastify.register(fastifyPassport.initialize())
 fastify.register(fastifyPassport.secureSession())
 
 fastifyPassport.use('google', new GoogleStrategy({
-    clientID:"337726399614-7hmsbpj49uhr8v8gvvqjfjnagqbitp0g.apps.googleusercontent.com",
-    clientSecret:'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',
+    clientID:process.env.clientID,
+    clientSecret:process.env.clientSecret,
     callbackURL: "http://localhost:5000/auth/google/callback"
 }, function (accessToken,refreshToken,profile,cb) {
     cb(undefined, profile)
