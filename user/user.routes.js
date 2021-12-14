@@ -5,13 +5,13 @@ const multer = require("fastify-multer");
 const upload = multer({ dest: "public/uploads/" });
 
 async function routes(fastify, options) {
+  
   fastify.get("/sendmail/:email", (req, reply, next) => {
     myfunction(fastify, reply, req);
   });
 
   fastify.register(multer.contentParser);
-  fastify.post(
-    "/profile",
+  fastify.post("/profile",
     { preHandler: upload.single("avatar") },
     async (req, res) => {
       return res.send({ hello: "seccessfull uploaded picture" });
