@@ -5,8 +5,10 @@ require('./utils/cron')
 const PORT = process.env.PORT || 5000;
 fastify.register(require("./user/user.routes"));
 const{rout}=require('./utils/nodemailer')
-rout(fastify)
+const{passport}=require('./passportOAuth')
 
+rout(fastify)
+passport(fastify)
 fastify.listen(PORT,()=>{
   console.log(`Server listening at http://127.0.0.1:${PORT}`);
 })
