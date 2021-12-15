@@ -34,7 +34,7 @@ fastifyPassport.registerUserSerializer(async(user,req) => {
 
 fastify.get('/secure',
     async (req, res) => {
-        console.log(req.user);
+        // console.log(req.user);
         return `👋 Hello ${req.user.displayName} 👋`
     }
 )

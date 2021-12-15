@@ -5,6 +5,10 @@ function generateAccessToken(username) {
     expiresIn: "18000s",
   });
 }
+
+
+
+
 function authenticateToken(req, res, next) {
   const authHeader = req.headers.authorization;
   if (authHeader === undefined) {
