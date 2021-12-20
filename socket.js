@@ -1,18 +1,14 @@
-
-const fastify = require('fastify')
 const socketio = require('fastify-socket.io')
 const { join } = require('path')
 const path = require('path')
 const { readFile } = require('fs').promises
-const app = fastify({ logger: true })
+exports.socket = (app, options) => {
 app.register(socketio)
-
 app.register(require('fastify-static'), {
   root: path.join(__dirname, 'public'),
-  // prefix: '/public/', // optional: default '/'
 })
 
-app.get('/', async (req, reply) => {
+app.get('/html', async (req, reply) => {
   const data = await readFile(join(__dirname,'index.html'))
   reply.header('content-type', 'text/html; charset=utf-8')
   reply.send(data)
@@ -36,6 +32,4 @@ app.io.on("connection", (socket) => {
   console.log("total users online:-",count);
 })
 })
-app.listen(5000)
-
- 
+}
