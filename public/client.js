@@ -10,7 +10,6 @@ textarea.addEventListener("keyup", (e) => {
     sendMessage(e.target.value);
   }
 });
-
 function sendMessage(message) {
   let msg = {
     user: name,
