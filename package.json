@@ -29,8 +29,10 @@
     "fastify-secure-session": "^3.0.0",
     "fastify-socket.io": "^3.0.0",
     "fastify-static": "^4.5.0",
+    "fastify-stripe": "^2.3.2",
     "jsonwebtoken": "^8.5.1",
     "liquidjs": "^9.31.0",
+    "moment": "^2.29.1",
     "moment-timezone": "^0.5.34",
     "mongoose": "^6.0.15",
     "node-cron": "^3.0.0",
@@ -41,6 +43,7 @@
     "passport-google-oauth20": "^2.0.0",
     "point-of-view": "^4.16.0",
     "socket.io": "^4.4.0",
-    "socket.io-client": "^4.4.0"
+    "socket.io-client": "^4.4.0",
+    "stripe": "^8.195.0"
   }
 }
