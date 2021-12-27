@@ -1,59 +1,118 @@
-// fastify.register(require('fastify-stripe'), {
-//     apiKey: 'sk_test_51Jts6FF72adyi7uKX7mUJimPxBNK8Ek9sixMNOHsusMaQ2MX5QStxCrDYXoE6mUBjDCwpE0l1FrsoHZQRqeCP3uF00nmrS9JRi'
-//   })
-
-exports.customer1=(fastify, options)=> {
-    const { stripe } = fastify
-    const createCustomers = stripe.customers.create({ email:'subh@gmail.com',
-        description: 'this is fastify customer',//req.body.description,
-        name: 'subhash',//req.body.name,
-        address: {
-          line1: 'amla',//req.body.address,
-          postal_code: '455336',//req.body.zip,
-          city: 'dewas',//req.body.city,
-          state: 'madhyapradesh',//req.body.state,
-          country:'india',// req.body.country,
-        }
-    })
-    return createCustomers;
+const customers = async (stripe, req) => {
+  const createCustomer = await stripe.customers.create({
+    email: req.body.stripeEmail,
+    description: req.body.description,
+    name: req.body.name,
+    address: {
+      line1: req.body.address,
+      postal_code: req.body.zip,
+      city: req.body.city,
+      state: req.body.state,
+      country: req.body.country,
+    },
+  });
+  return createCustomer;
 };
 
-const createPlan = async (stripe,data) => {
-    const plan = await stripe.plans.create({
-      amount: data.planPrice * 100,
-      currency: data.currency,
-      interval: "year",
-      interval_count: data.stripeDuration,
-      product: data.productId,
-    });
-    data.stripePlanId = plan.id;
-    return data;
+const card = async (stripe, customer, req) => {
+  let param = {};
+  param.card = {
+    number: req.body.cardNumber,
+    exp_month: req.body.expMonth,
+    exp_year: req.body.expYear,
+    cvc: req.body.cvc,
   };
-  
+  return {
+    token: await stripe.tokens.create(param),
+    customerId: customer.id,
+  };
+};
 
-const createProduct = async (stripe,req) => {
-    const resp = await stripe.products.create({
-      name: req.body.planName,
-      description: req.body.description,
-    });
-    return resp;
-  };
-  
-  const price = async (stripe,resp, req) => {
-    const res = await stripe.prices.create({
-      unit_amount: req.body.planPrice * 100,
-      currency: req.body.currency,
-      recurring: { interval: "year" },
-      product: resp.id,
-    });
-    return res;
-  };
-  
-  const creatp = async (stripe,res, resp, req) => {
-    req.body.productId = resp.id;
-    req.body.priceId = res.id;
-    const result = await createPlan(stripe,req.body);
-    return result;
-  };
-  
-  module.exports={creatp,price,createProduct}
+const toke = async (stripe, result, req) => {
+  const token = result["token"]["id"];
+  const id = result.customerId;
+  return await stripe.customers.createSource(id, {
+    source: token,
+  });
+};
+
+const subscriptionData = async (stripe, subscription, req) => {
+  return await stripe.subscriptions.create({
+    customer: subscription.customer,
+    items: [
+      {
+        price: req.body.priceId,
+      },
+    ],
+  });
+};
+
+const subId = async (sub) => {
+  var data = {};
+  data.priceId = sub.plan.id;
+  data.subId = sub.id;
+  data.periodStart = sub.current_period_start;
+  data.periodEnd = sub.current_period_end;
+  data.invoiceId = sub.latest_invoice;
+  return data;
+};
+
+const createPlan = async (stripe, data) => {
+  const plan = await stripe.plans.create({
+    amount: data.planPrice * 100,
+    currency: data.currency,
+    interval: "year",
+    interval_count: data.stripeDuration,
+    product: data.productId,
+  });
+  data.stripePlanId = plan.id;
+  return data;
+};
+
+const createProduct = async (stripe, req) => {
+  const resp = await stripe.products.create({
+    name: req.body.planName,
+    description: req.body.description,
+  });
+  return resp;
+};
+
+const price = async (stripe, resp, req) => {
+  const res = await stripe.prices.create({
+    unit_amount: req.body.planPrice * 100,
+    currency: req.body.currency,
+    recurring: { interval: "year" },
+    product: resp.id,
+  });
+  return res;
+};
+
+const creatp = async (stripe, res, resp, req) => {
+  req.body.productId = resp.id;
+  req.body.priceId = res.id;
+  const result = await createPlan(stripe, req.body);
+  return result;
+};
+
+const cancelSub = async (stripe, req) => {
+  const subscribe = await stripe.subscriptions.del(req.body.subscriptionId);
+  return subscribe;
+};
+
+const delPlan = async (stripe, req) => {
+  const deleteData = await stripe.plans.del(req.body.priceId);
+  return deleteData;
+};
+
+module.exports = {
+  creatp,
+  price,
+  createProduct,
+  customers,
+  card,
+  toke,
+  subId,
+  subscriptionData,
+  cancelSub,
+  delPlan,
+};
