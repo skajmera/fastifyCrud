@@ -4,7 +4,7 @@ require("./mongo");
 require("./utils/cron");
 /////
 fastify.register(require('fastify-stripe'), {
-  apiKey: 'sk_test_51Jts6FF72adyi7uKX7mUJimPxBNK8Ek9sixMNOHsusMaQ2MX5QStxCrDYXoE6mUBjDCwpE0l1FrsoHZQRqeCP3uF00nmrS9JRi'
+  apiKey: process.env.skTestKey
 })
 
 const subscription=require("./subscription/subscription.router")
