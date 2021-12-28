@@ -1,3 +1,4 @@
+const Subscription = require("./subscription.model");
 const customers = async (stripe, req) => {
   const createCustomer = await stripe.customers.create({
     email: req.body.stripeEmail,
@@ -104,6 +105,17 @@ const delPlan = async (stripe, req) => {
   return deleteData;
 };
 
+const findSub = async (data) => {
+  const reports = await Subscription.find(data);
+  return reports;
+};
+
+const storeData = async (subscriptionToStore) => {
+  const data = await Subscription.create(subscriptionToStore);
+  return data;
+};
+
+
 module.exports = {
   creatp,
   price,
@@ -115,4 +127,6 @@ module.exports = {
   subscriptionData,
   cancelSub,
   delPlan,
+  findSub,
+  storeData
 };

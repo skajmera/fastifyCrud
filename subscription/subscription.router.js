@@ -22,16 +22,22 @@ async function routes(fastify, options) {
     const result = await subscriptionController.deletePlan(fastify, request);
     return response.send(result);
   });
+
+  fastify.get("/todayTotalAmount",(  async (request, response) => {
+    const result = await subscriptionController.getTotalAmountToday(request);
+    return response.send(result);
+  }));
 }
 
 module.exports = routes;
 
 /*
 {
+    
     "stripeEmail": "subhash@gmail.com",
     "planName": "basic",
     "description": "subscription payment",
-    "priceId": "price_1KAZ8XF72adyi7uKeEBUBPEh",
+    "priceId": "price_1KBHQwF72adyi7uKpzFqvGh3",
     "planPrice": 200,
     "currency": "USD",
     "name": "sk_jmera",
@@ -44,11 +50,10 @@ module.exports = routes;
     "expMonth": 5,
     "expYear": 2024,
     "cvc": 178,
-    "productId": "prod_KqFd9OXhIXIhfE",
-    "stripePlanId": "plan_KqFdNjGqvyRCGT"
+    "subscriptionId": "sub_1KBDHFF72adyi7uKwvnrqpan",
+    "productId": "prod_KqzPNYus0nsUQ4",
+    "stripePlanId": "plan_KqzPaS9yrvYQS3"
 }
-
-
 //////////////////////////////////////////////
 
 "priceId": "price_1KAZ8XF72adyi7uKeEBUBPEh",
